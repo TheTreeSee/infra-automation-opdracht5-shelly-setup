@@ -56,3 +56,28 @@ Het MAC-adres (dat ook in de SSID zit), het model en de firmware worden bij de s
 
 Is het wachtwoord van `Howest-IoT` fout, dan is de stekker niet meer bereikbaar en moet je hem opnieuw resetten
 (knop ±10 s indrukken). Gebruik `--keep-ap` als je dat risico niet wilt nemen.
+
+## Getest op een echte stekker
+
+Op 7 november 2026 getest met een **Shelly Plug S (Gen1, `SHPLG-S`, firmware v1.14.0)** na een factory reset.
+Thuis bestaat `Howest-IoT` niet, dus de stekker werd met het thuisnetwerk verbonden:
+
+```sh
+python3 shelly_setup.py --join-ap --ssid LocNet
+```
+
+Na de herstart kreeg de stekker via DHCP een adres op het thuisnetwerk. Alle instellingen werden daar opnieuw
+uitgelezen (`/settings`, `/status`):
+
+| instelling | waarde op de stekker |
+|---|---|
+| naam | `Loccufier-Guus-Outlet1` |
+| toestand na stroomonderbreking | `off` |
+| LED's (status / stroom) | beide uit |
+| maximale belasting | 2200 W |
+| MQTT | aan, `172.23.83.254:1883`, id `Loccufier-Guus-Outlet1` |
+| cloud / CoIoT | uit / uit |
+| Wi-Fi | client op het opgegeven netwerk via DHCP, eigen accesspoint **uit** |
+
+MQTT staat correct ingesteld maar is thuis niet verbonden: de broker `172.23.83.254` is enkel bereikbaar op het
+netwerk van Howest. Op school: stekker resetten en `python3 shelly_setup.py --join-ap` (standaard `Howest-IoT`).
